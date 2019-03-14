@@ -26,8 +26,9 @@ import seaborn as sns; sns.set(style="ticks", color_codes=True)
 ########## USER MUST DEFINE THESE ###########
 image_folder_name = 'example_png' # subfolder where images are located
 image_format = 'png' # format of image files (the exact suffix of the filenames)
-Nsamples = 15000 #  number of random samples used to "train" k-means here (for faster execution)
-NUMBER_OF_CLUSTERS = 8 # the number of independent clusters for k-means
+band_names = ['B02','B03','B04','B05','B06','B07','B08','B11','B12'] # names of bands (in file names). shuld all have some length
+Nsamples = 20000 #  number of random samples used to "train" k-means here (for faster execution)
+NUMBER_OF_CLUSTERS = 10 # the number of independent clusters for k-means
 colour_map = 'terrain' # cmap, see matplotlib.org/examples/color/colormaps_reference.html
 #############################################
 
@@ -37,21 +38,14 @@ for image_path in glob.glob(image_folder_name+'/*.'+image_format):
     print('reading ',image_path)
     temp = imageio.imread(image_path)
     temp = temp[:,:,0].squeeze()
-    images[image_path[18:21]] = temp
+    images[image_path[18:21]] = temp # FOR DIFFERENT FILE NAMES, ADJUST THIS!
 print('images have ', np.size(temp),' pixels each')
 
 
 # make a 3D numpy array of data...
-imagecube = np.zeros([images['B2_'].shape[0],images['B2_'].shape[1],9])
-imagecube[:,:,0] = images['B2_'] # 
-imagecube[:,:,1] = images['B3_'] # 
-imagecube[:,:,2] = images['B4_'] #
-imagecube[:,:,3] = images['B5_'] #
-imagecube[:,:,4] = images['B6_'] #
-imagecube[:,:,5] = images['B7_'] # 
-imagecube[:,:,6] = images['B8_'] # 
-imagecube[:,:,7] = images['B11'] # 
-imagecube[:,:,8] = images['B12'] # 
+imagecube = np.zeros([images['B02'].shape[0],images['B02'].shape[1],np.size(band_names)])
+for j in np.arange(np.size(band_names)):
+    imagecube[:,:,j] = images[band_names[j]] # 
 imagecube=imagecube/256 #  scaling to between 0 and 1
 
 # display an RGB or false colour image
@@ -67,7 +61,7 @@ for i in range(Nsamples):
     yr=np.random.randint(0,imagecube.shape[0]-1)
     imagesamples.append(imagecube[yr,xr,:])
 # convert to pandas dataframe
-imagessamplesDF=pd.DataFrame(imagesamples,columns = ['B2_','B3_','B4_','B5_','B6_','B7_','B8_','B11','B12'])
+imagessamplesDF=pd.DataFrame(imagesamples,columns = band_names)
 
 
 # make pairs plot (each band vs. each band)
@@ -87,9 +81,10 @@ for k in KM_train:
 imagessamplesDF2=imagessamplesDF
 imagessamplesDF2['group'] = KM_train
 # pair plots with clusters coloured:
-pp2=sns.pairplot(imagessamplesDF,vars=['B2_','B3_','B4_','B5_','B6_','B7_','B8_','B11','B12'], hue='group',plot_kws = seaborn_params_p)
+pp2=sns.pairplot(imagessamplesDF,vars=band_names, hue='group',plot_kws = seaborn_params_p)
+pp2._legend.remove()
 
-# 
+#  make the clustered image
 imageclustered=np.empty((imagecube.shape[0],imagecube.shape[1]))
 i=0
 for row in imagecube:
