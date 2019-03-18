@@ -26,9 +26,9 @@ import seaborn as sns; sns.set(style="ticks", color_codes=True)
 ########## USER MUST DEFINE THESE ###########
 image_folder_name = 'example_png' # subfolder where images are located
 image_format = 'png' # format of image files (the exact suffix of the filenames)
-band_names = ['B02','B03','B04','B05','B06','B07','B08','B11','B12'] # names of bands (in file names). shuld all have some length
+band_names = ['B02','B03','B04','B05','B06','B07','B08','B11','B12'] # names of bands (in file names). should all have some length
 Nsamples = 20000 #  number of random samples used to "train" k-means here (for faster execution)
-NUMBER_OF_CLUSTERS = 10 # the number of independent clusters for k-means
+NUMBER_OF_CLUSTERS = 4 # the number of independent clusters for k-means
 colour_map = 'terrain' # cmap, see matplotlib.org/examples/color/colormaps_reference.html
 #############################################
 
