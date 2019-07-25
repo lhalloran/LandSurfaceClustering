@@ -53,7 +53,6 @@ thefigsize = (10,8)# set figure size
 #plt.figure(figsize=thefigsize)
 #plt.imshow(imagecube[:,:,0:3])
 
-
 # sample random subset of images
 imagesamples = []
 for i in range(Nsamples):
@@ -68,7 +67,7 @@ imagessamplesDF=pd.DataFrame(imagesamples,columns = band_names)
 seaborn_params_p = {'alpha': 0.15, 's': 20, 'edgecolor': 'k'}
 #pp1=sns.pairplot(imagessamplesDF, plot_kws = seaborn_params_p)#, hist_kws=seaborn_params_h)
 
-# fit kmeans to to samples:
+# fit kmeans to samples:
 from sklearn.cluster import KMeans
 
 KMmodel = KMeans(n_clusters=NUMBER_OF_CLUSTERS) 
@@ -94,3 +93,4 @@ for row in imagecube:
 # plot the map of the clustered data
 plt.figure(figsize=thefigsize)
 plt.imshow(imageclustered, cmap=colour_map) 
+
