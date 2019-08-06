@@ -2,8 +2,11 @@
 
 Landon Halloran  /  www.ljsh.ca  /  03.2019
 
+08.2019: If you are interested on collaborating to do something interesting with this type of analysis...send me an email.
+
 This is a script that reads in remote sensing data, performs k-means clustering on sample pixels from the images, and then plots the result. As this is an unsupervised learning algorithm, some knowledge of the "ground truth" will be needed in order to interpret results.
-The script will be made more general in the future... for now, you will need to edit it manually.
+The script might be made more general in the future... for now, you will need to edit it manually.
+
 
 
 # Example data
